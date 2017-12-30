@@ -78,7 +78,7 @@ docker run -d --name utk -v /opt/botdefs/utk:/opt/kucoinBot/config --restart alw
 ## Utilities
 Bots run without your intervention. It is recommended that you have a means to track your trades ergo, track the trades the bot is making for you. That is the same for this bot as well as any other bots you may try.
 
-I track my trades using [CryptoNotify](http://cryptonotify.com). This tool can be setup to email executed trades or, as I prefer, send a message to a Slack channel.
+I highly recommend using the slack notification feature here.
 
 ## License
 Code released under the [MIT License](https://github.com/jufkes/bittrexBot/master/LICENSE).
