@@ -70,10 +70,10 @@ def get_last_sell_order(completedSellOrders):
     orderTime = (data[0]['createdAt'])
     return (orderTime)
 
-def post_slack(type):
+def post_slack(type, amount, price):
     logging.info("Attempting to send message...")
     sc = SlackClient(token)
-    text = type + " completed for " + currency
+    text = type + " - " + currency + "Amount: " + amount + "Price:  " + price
     sc.api_call(
         "chat.postMessage",
         channel=channel,
@@ -97,7 +97,15 @@ def determine_order_data(data):
         order = False
     return order
 
+def get_last_completed_order_price(data):
+    data = data[0]
+    logging.info(data[2])
+    return data[2]
 
+def get_last_completed_order_amount(data):
+    data = data[0]
+    logging.info(data[3])
+    return data[3]
 
 cycle = 0
 while True:
@@ -107,6 +115,7 @@ while True:
         buyOrderData = openOrders['BUY']
         if (openOrders['BUY']) and (openOrders['SELL']):
             logging.info(openOrders)
+
         elif ((determine_order_data(sellOrderData) == False) and (determine_order_data(buyOrderData) == True))\
                 or ((determine_order_data(sellOrderData) == True) and (determine_order_data(buyOrderData) == False)):
             for type in openOrders:
@@ -117,11 +126,16 @@ while True:
                 except:
                     logging.info ("Order type " + type + " completed")
                     if token:
-                        post_slack(type)
+                        data = openOrders[type]
+                        orderAmount = get_last_completed_order_amount(data)
+                        orderPrice = get_last_completed_order_price(data)
+                        post_slack(type, orderAmount, orderPrice)
+
             completedSellOrders = client.get_deal_orders(tokenPair, 'SELL')
             completedBuyOrders = client.get_deal_orders(tokenPair, 'BUY')
             checkTime = time.time() * 1000
             logging.info("BaseTime: " + str(checkTime))
+
             if (isWithinChecktime(get_last_buy_order(completedBuyOrders), checkTime, checkInterval)):
                 logging.info("Order executed within " + str(checkInterval) + "...getting price")
                 price = (get_order_price(completedBuyOrders))
@@ -130,6 +144,7 @@ while True:
                 logging.info("Order executed within " + str(checkInterval) + "...getting price")
                 price = (get_order_price(completedSellOrders))
                 logging.info("Last sell price: " + str(price))
+
             openOrders = (client.get_active_orders(tokenPair))
             balance = client.get_coin_balance(currency)
             balance = (float(balance['balanceStr']) + float(extCoinBalance))
@@ -141,6 +156,7 @@ while True:
             sellPrice = determine_initial_sell_price(price)
             logging.info("setting sell of " + str(sellAmount) + " at " + str(sellPrice))
             logging.info (client.create_sell_order(tokenPair, sellPrice, sellAmount))
+
         else:
             logging.info("No orders present...setting to ticker price")
             balance = client.get_coin_balance(currency)
@@ -155,6 +171,7 @@ while True:
             sellPrice = determine_initial_sell_price(price)
             logging.info("setting sell of " + str(sellAmount) + " at " + str(sellPrice))
             logging.info(client.create_sell_order(tokenPair, sellPrice, sellAmount))
+
     except:
         logging.info ("Shit went sideways...")
 
