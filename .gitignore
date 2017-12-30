@@ -1,0 +1,4 @@
+config/*
+*.idea/
+test*
+*.log
