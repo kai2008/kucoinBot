@@ -33,11 +33,9 @@ This is an experimental bot for swing trading against the kucoin exchange. Set a
 
 The percentage values are actual percentages...not decimals. So if you want to trade 3.25% you would input 3.25 in that value. I would also not recommend going below 10 seconds for the checkInterval. Otherwise, it's possible to induce a race condition with bittrex.
 
-##buyDifference explanation
+## buyDifference explanation
 
-In my opinion, the previous configuration model with individual buyVolume and sellVolume parameters ended up being fairly unpredictable. If the price went up, so did the amount the bot would end up buying. If it went down, it ended up selling more. The model was unsustainable over a long period of time and required a LOT of rebasing. 
-
-To resolve this problem, I've done away with the individual settings for a global setting. In short, setting the 'volumePercent' param with a 'buyDifference' of zero places matching buys / sells. Adjusting the 'buyDifference' changes only the buying behavior. It's been much more predictable and less prone to erroneous buys / sells.
+Setting the 'volumePercent' param with a 'buyDifference' of zero places matching buys / sells. Adjusting the 'buyDifference' changes only the buying behavior. It's been much more predictable and less prone to erroneous buys / sells.
 
 To be transparent, here's the forumla being used to calculate the buy amount:
 
@@ -68,8 +66,6 @@ The bot is designed to trade a single token at a time. It's recommended to run i
 Docker will need to be installed prior to trying to run this. To install Docker, see their installation guide:
 https://docs.docker.com/engine/installation/
 The docker image can be found at __jufkes/kucoinbot__
-
-<b><font color="red"> ALERT: BREAKING CHANGE INTRODUCED!! </font></b>
 
 To run:
 docker run -d --name <name> -v /path/to/directory_containing_config_file:/opt/kucoinBot/config jufkes/kucoinbot:latest
