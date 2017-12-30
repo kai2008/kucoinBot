@@ -65,8 +65,6 @@ Docker will need to be installed prior to trying to run this. To install Docker,
 https://docs.docker.com/engine/installation/
 The docker image can be found at __jufkes/kucoinbot__
 
-<b><font color="red"> ALERT: BREAKING CHANGE INTRODUCED!! </font></b>
-
 To run:
 docker run -d --name <name> -v /path/to/directory_containing_config_file:/opt/kucoinBot/config jufkes/kucoinbot:latest
 
