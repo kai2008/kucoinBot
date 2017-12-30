@@ -27,6 +27,8 @@ This is an experimental bot for swing trading against the kucoin exchange. Set a
 | buyDifference  |  Integer/Float |  0 |  No |  Percent adjustment to buy orders. Positive values buy more than sells. Negative values buys less than sell | 
 | extCoinBalance | Integer/Float | 0| No | Off exchange balance|
 | checkInterval | Integer | 30| No | How often the bot checks state|
+| slackToken | string | empty | Yes | token for sending to slack |
+| slackChannel | string | empty | Yes | channel for trade notificaiton | 
 
 
 The percentage values are actual percentages...not decimals. So if you want to trade 3.25% you would input 3.25 in that value. I would also not recommend going below 10 seconds for the checkInterval. Otherwise, it's possible to induce a race condition with bittrex.
@@ -55,6 +57,8 @@ To be transparent, here's the forumla being used to calculate the buy amount:
   "buyDifference": 0,
   "extCoinBalance": 0,
   "checkInterval": 30,
+  "slackToken": "",
+  "slackChannel": ""
 }
 ```
 __the config file MUST be named botConfig.json__
