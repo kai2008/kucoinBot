@@ -59,6 +59,22 @@ To be transparent, here's the forumla being used to calculate the buy amount:
 ```
 __the config file MUST be named botConfig.json__
 
+## Usage
+The bot is designed to trade a single token at a time. It's recommended to run it in the docker container.
+Docker will need to be installed prior to trying to run this. To install Docker, see their installation guide:
+https://docs.docker.com/engine/installation/
+The docker image can be found at __jufkes/kucoinbot__
+
+<b><font color="red"> ALERT: BREAKING CHANGE INTRODUCED!! </font></b>
+
+To run:
+docker run -d --name <name> -v /path/to/directory_containing_config_file:/opt/kucoinBot/config jufkes/kucoinbot:latest
+
+Example:
+docker run -d --name utk -v /opt/botdefs/utk:/opt/kucoinBot/config --restart always jufkes/kucoinbot:latest
+
+-- The utk directory, in this case, contains the botConfig.json
+
 ## Utilities
 Bots run without your intervention. It is recommended that you have a means to track your trades ergo, track the trades the bot is making for you. That is the same for this bot as well as any other bots you may try.
 
