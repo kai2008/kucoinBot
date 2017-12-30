@@ -58,31 +58,32 @@ while True:
     try:
         openOrders = (client.get_active_orders(tokenPair))
         if (openOrders['BUY']) and (openOrders['SELL']):
-            print (openOrders)
+            logging.info(openOrders)
         else:
             for type in openOrders:
                 try:
                     oid = get_oid(openOrders[type])
-                    print ("Cancel order " + oid)
-                    print (client.cancel_order(tokenPair, oid, type))
+                    logging.info("Cancel order " + oid)
+                    logging.info(client.cancel_order(tokenPair, oid, type))
                 except:
-                    print ("Order type " + type + " completed")
+                    logging.info ("Order type " + type + " completed")
             balance = client.get_coin_balance(currency)
             balance = (float(balance['balanceStr']) + float(extCoinBalance))
             currentTicker = (client.get_tick(tokenPair)['lastDealPrice'])
             buyAmount = determine_buy_amount(balance)
             buyPrice = determine_initial_buy_price(currentTicker)
-            print("setting buy of " + str(buyAmount) + " at " + str(buyPrice))
-            print (client.create_buy_order(tokenPair, buyPrice, buyAmount))
+            logging.info("setting buy of " + str(buyAmount) + " at " + str(buyPrice))
+            logging.info (client.create_buy_order(tokenPair, buyPrice, buyAmount))
             sellAmount = determine_sell_amount(balance)
             sellPrice = determine_initial_sell_price(currentTicker)
-            print("setting sell of " + str(sellAmount) + " at " + str(sellPrice))
-            print (client.create_sell_order(tokenPair, sellPrice, sellAmount))
+            logging.info("setting sell of " + str(sellAmount) + " at " + str(sellPrice))
+            logging.info (client.create_sell_order(tokenPair, sellPrice, sellAmount))
     except:
-        print ("Shit went sideways...")
+        logging.info ("Shit went sideways...")
 
     if cycle == 100:
         logging.info("Garbage collection")
         gc.collect()
         count = 0
+    logging.info("Waiting " + str(checkInterval) + " for next cycle...")
     time.sleep(checkInterval)
